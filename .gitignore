@@ -1,0 +1,70 @@
+# Build results
+
+bin/
+obj/
+
+# Visual Studio files
+
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / JetBrains
+
+.idea/
+*.sln.iml
+
+# VS Code
+
+.vscode/
+
+# Logs
+
+*.log
+
+# OS files
+
+.DS_Store
+Thumbs.db
+
+# NuGet
+
+*.nupkg
+packages/
+
+# Environment variables
+
+.env
+.env.*
+
+# Secrets
+
+appsettings.Development.json
+
+# Publish
+
+publish/
+out/
+
+# Node (if you add React later)
+
+node_modules/
+dist/
+build/
+
+# Coverage
+
+coverage/
+*.coverage
+*.coveragexml
+
+# Temporary files
+
+*.tmp
+*.temp
+
+# Docker
+
+docker-compose.override.yml
