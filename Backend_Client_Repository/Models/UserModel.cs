@@ -1,6 +1,9 @@
 public class UserModel
 {
-    public int Id { get; set; }
+    public int idUsuarios { get; set; }
+
+    public required string username { get; set; }
 
     public required string password { get; set; }
+    
 }
