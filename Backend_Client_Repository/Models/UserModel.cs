@@ -1,6 +1,6 @@
-public class UserModel
+public class Usuario
 {
-    public int idUsuarios { get; set; }
+    public int id { get; set; }
 
     public required string username { get; set; }
 

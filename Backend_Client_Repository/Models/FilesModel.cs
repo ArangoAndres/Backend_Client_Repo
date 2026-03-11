@@ -14,5 +14,5 @@ public class Archivo
     public int ClienteId { get; set; }
 
     // Navegación
-    public Cliente Cliente { get; set; }
+    public virtual Cliente Cliente { get; set; }
 }
