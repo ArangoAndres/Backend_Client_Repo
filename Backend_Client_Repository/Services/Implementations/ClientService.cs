@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 public class ClientService : IClientInterface
 {
 
@@ -30,23 +31,48 @@ public class ClientService : IClientInterface
 
 
 
+    public async Task<List<Cliente>> GetAllClients()
+    {
+       return await _context.Clientes.ToListAsync();
+    }
+
+    public async Task<Cliente> GetClientById(int id)
+    {
+        return await _context.Clientes.FirstOrDefaultAsync(c => c.Id == id) ??
+         throw new Exception("Cliente no encontrado") ;
+    }
+
+
     public Task<bool> DeleteClient(int id)
     {
-        throw new NotImplementedException();
-    }
+        var cliente= _context.Clientes.FirstOrDefault(c => c.Id == id);
+        if (cliente == null)
+        {
+            return Task.FromResult(false);
+        }
+        _context.Clientes.Remove(cliente);
+        _context.SaveChanges();
+        return Task.FromResult(true);
 
-    public Task<List<Cliente>> GetAllClients()
-    {
-        throw new NotImplementedException();
     }
-
-    public Task<Cliente> GetClientById(int id)
+    
+    public async Task<Cliente> UpdateClient(int id, Cliente client)
     {
-        throw new NotImplementedException();
-    }
+        var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Id == id);
+        if (cliente == null)
+        {
+            throw new Exception("Cliente no encontrado");
+        }
+        // Update the cliente properties with the new values from 'client'
+        cliente.Nombre = client.Nombre;
+        cliente.Email = client.Email;
+        cliente.Cedula = client.Cedula;
+        cliente.Telefono = client.Telefono;
+        cliente.Direccion = client.Direccion;
+        cliente.Ciudad = client.Ciudad;
+        cliente.Departamento = client.Departamento;
+        await _context.SaveChangesAsync();
+        return cliente;
 
-    public Task<Cliente> UpdateClient(int id, Cliente client)
-    {
-        throw new NotImplementedException();
     }
 }
