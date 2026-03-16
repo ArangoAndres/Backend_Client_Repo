@@ -5,8 +5,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddOpenApi();
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -34,14 +34,35 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IClientInterface, ClientService>();
+builder.Services.AddScoped<IobservacionesInterface, ObservacionesService>();
 builder.Services.AddControllers();
 
+
+// 🔵 CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
+
 var app = builder.Build();
-app.MapControllers();
+
+
+// 🔵 activar CORS
+app.UseCors("AllowFrontend");
+
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllers();
+
 app.Run();
-
-

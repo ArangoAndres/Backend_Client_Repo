@@ -17,6 +17,7 @@ public class ObservacionesController : ControllerBase
         var observacion = await _observacionesService.CreateObservacion(dto);
         return Ok(observacion);
     }
+    
     [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteObservacion(int id)
@@ -29,6 +30,7 @@ public class ObservacionesController : ControllerBase
         return Ok("Observación eliminada");
     }
     
+
     [Authorize]
     [HttpGet("cliente/{clientId}")]
    public async Task<IActionResult> GetAllObservacionesByClientId(int clientId)
@@ -36,6 +38,7 @@ public class ObservacionesController : ControllerBase
         var observaciones = await _observacionesService.GetAllObservacionesByClientId(clientId);
         return Ok(observaciones);
     }
+
 
     [Authorize]
     [HttpGet("{id}")]

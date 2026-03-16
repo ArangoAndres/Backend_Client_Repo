@@ -13,8 +13,8 @@ public class ObservacionesService : IobservacionesInterface
     {
         var observacion = new Observacion
         {
-            ObservacionTexto = dto.ObservacionTexto,
             ClienteId = dto.ClienteId,
+            ObservacionTexto = dto.ObservacionTexto,
             Fecha = DateOnly.FromDateTime(DateTime.Now)
         };
 
