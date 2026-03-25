@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.FileProviders;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
-
+// 🔹 DB
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -16,6 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     )
 );
 
+// 🔹 JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
 {
@@ -35,13 +36,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     };
 });
 
+// 🔹 Servicios
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IClientInterface, ClientService>();
 builder.Services.AddScoped<IobservacionesInterface, ObservacionesService>();
+builder.Services.AddScoped<IFileInterface, FileService>();
+
 builder.Services.AddControllers();
 
-
-// 🔵 CORS
+// 🔹 CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
@@ -53,16 +56,37 @@ builder.Services.AddCors(options =>
         });
 });
 
-
 var app = builder.Build();
 
 
-// 🔵 activar CORS
+// 🔥 CONFIGURAR UPLOADS CORRECTAMENTE
+var uploadsPath = Path.Combine(
+    builder.Environment.ContentRootPath,
+    "uploads"
+);
+
+if (!Directory.Exists(uploadsPath))
+{
+    Directory.CreateDirectory(uploadsPath);
+}
+
+app.UseStaticFiles(); // default
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(uploadsPath),
+    RequestPath = "/uploads"
+});
+
+
+// 🔹 CORS
 app.UseCors("AllowFrontend");
 
+// 🔹 Auth
 app.UseAuthentication();
 app.UseAuthorization();
 
+// 🔹 Controllers
 app.MapControllers();
 
 app.Run();

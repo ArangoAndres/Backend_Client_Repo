@@ -19,7 +19,7 @@ public class FileService : IFileInterface
     // 🔥 MÉTODO PRIVADO PARA NO DUPLICAR LÓGICA
     private async Task<(string ruta, string nombreOriginal, string tipo, int peso)> GuardarArchivo(IFormFile file)
     {
-        var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
+       var uploadsFolder = Path.Combine(_environment.ContentRootPath, "uploads");
         Directory.CreateDirectory(uploadsFolder);
 
         var cleanFileName = Path.GetFileName(file.FileName);
