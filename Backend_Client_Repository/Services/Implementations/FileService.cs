@@ -149,11 +149,12 @@ public class FileService : IFileInterface
     public async Task<(byte[] file, string contentType, string fileName)> DownloadFile(int id)
     {
         var archivo = await GetFileById(id);
+        
 
         if (archivo == null)
             throw new ArgumentException("Archivo no encontrado.");
 
-        var filePath = Path.Combine(_environment.WebRootPath, archivo.Ruta.TrimStart('/'));
+        var filePath = Path.Combine(_environment.ContentRootPath, archivo.Ruta.TrimStart('/'));
 
         if (!File.Exists(filePath))
             throw new FileNotFoundException("Archivo físico no encontrado.");
